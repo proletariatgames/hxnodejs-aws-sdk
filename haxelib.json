@@ -1,0 +1,14 @@
+{
+  "name": "hxnodejs-aws-sdk",
+  "url": "https://github.com/proletariatgames/hxnodejs-aws-sdk",
+  "license": "MIT",
+  "classPath": "src",
+  "tags": ["nodejs", "aws-sdk", "aws"],
+  "description": "Externs for the aws-sdk NPM module",
+  "releasenote": "Initial release",
+  "version": "2.2.42",
+  "contributors": ["Proletariat", "lpetre", "danogles", "waneck"],
+  "dependencies": {
+    "hxnodejs": ""
+  }
+}
