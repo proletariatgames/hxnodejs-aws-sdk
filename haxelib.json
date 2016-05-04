@@ -6,7 +6,7 @@
   "tags": ["nodejs", "hxnodejs", "aws-sdk", "aws"],
   "description": "Externs for the aws-sdk NPM module",
   "releasenote": "Initial release",
-  "version": "2.2.43-alpha",
+  "version": "2.2.0-alpha",
   "contributors": ["Proletariat", "lpetre", "danogles", "waneck"],
   "dependencies": {
     "hxnodejs": ""
