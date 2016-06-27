@@ -6,10 +6,13 @@ Due to the huge size of the API, this only implements a small subset of the whol
 from that, only a small part is correctly typed in regards to its possible arguments
 and return type
 
-| Module     | Status    |
-| ---------- | ---------:|
-| AWS core   | complete  |
-| EC2        | mixed     |
+| Module          | Status     |
+| --------------- | ----------:|
+| AWS core        | complete   |
+| EC2             | mixed      |
+| SQS             | mixed      |
+| DynamoDB        | untyped    |
+| MetadataService | untyped    |
 
 Example:
 ```haxe

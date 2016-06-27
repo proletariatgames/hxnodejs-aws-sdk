@@ -95,7 +95,7 @@ extern class Request extends EventEmitter<Request> {
   /**
     Converts the request object into a readable stream that can be read from or piped into a writable stream.
    **/
-  function createReadStream():js.node.Stream.IStream;
+  function createReadStream():js.node.stream.Readable.IReadable;
 
   /**
     Enumerates over individual items of a request, paging the responses if necessary.
@@ -105,6 +105,7 @@ extern class Request extends EventEmitter<Request> {
   /**
     Iterates over each page of results given a pageable request, calling the provided callback with each page of data.
    **/
+  @:overload(function(callback:js.Error->Dynamic->(Void->Void)->Void):Void {})
   function eachPage(callback:js.Error->Dynamic->Void):Void;
 
   /**
