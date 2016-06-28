@@ -151,75 +151,7 @@ extern class SQS extends Service {
      **/
     @:optional var WaitTimeSeconds(default, null):Int;
 
-  }, callback:js.Error->{ Messages: Array<{
-    /**
-      A unique identifier for the message. Message IDs are considered unique across all AWS accounts for an extended
-      period of time.
-     **/
-    MessageId:String,
-
-    /**
-      An identifier associated with the act of receiving the message. A new receipt handle is returned every time you
-      receive a message. When deleting a message, you provide the last received receipt handle to delete the message.
-     **/
-    ReceiptHandle:String,
-
-    /**
-      An MD5 digest of the non-URL-encoded message body string.
-     **/
-    MD5OfBody:String,
-
-    /**
-      The message's contents (not URL-encoded).
-     **/
-    Body:String,
-
-    /**
-      SenderId, SentTimestamp, ApproximateReceiveCount, and/or ApproximateFirstReceiveTimestamp. SentTimestamp and
-      ApproximateFirstReceiveTimestamp are each returned as an integer representing the epoch time in milliseconds.
-     **/
-    Attributes:haxe.DynamicAccess<String>,
-
-    /**
-      An MD5 digest of the non-URL-encoded message attribute string. This can be used to verify that Amazon SQS received
-      the message correctly. Amazon SQS first URL decodes the message before creating the MD5 digest. For information
-      about MD5, go to http://www.faqs.org/rfcs/rfc1321.html.
-     **/
-    MD5OfMessageAttributes:String,
-
-    /**
-      Each message attribute consists of a Name, Type, and Value. For more information, see Message Attribute Items.
-     **/
-    MessageAttributes:haxe.DynamicAccess<Dynamic>,
-
-    /**
-      Strings are Unicode with UTF8 binary encoding. For a list of code values, see
-      http://en.wikipedia.org/wiki/ASCII#ASCII_printable_characters.
-     **/
-    StringValue:String,
-
-    /**
-      Binary type attributes can store any binary data, for example, compressed data, encrypted data, or images.
-     **/
-    BinaryValue:js.node.Buffer,
-
-    /**
-      Not implemented. Reserved for future use.
-     **/
-    StringListValues:Array<String>,
-
-    /**
-      Not implemented. Reserved for future use.
-     **/
-    BinaryListValues:Array<js.node.Buffer>,
-
-    /**
-      Amazon SQS supports the following logical data types: String, Number, and Binary. For the Number data type, you
-      must use StringValue.
-      You can also append custom labels. For more information, see Message Attribute Data Types.
-     **/
-    DataType:String,
-  }>}->Void) : Request;
+  }, callback:js.Error->{ Messages: Array<MessageReturn>}->Void) : Request;
 
   /**
     Revokes any permissions in the queue policy that matches the specified Label parameter.
@@ -248,4 +180,74 @@ extern class SQS extends Service {
   @:overload(function ():Request {})
   @:overload(function (callback:js.Error->Dynamic->Void):Request {})
   public function setQueueAttributes(params:Dynamic, callback:js.Error->Dynamic->Void) : Request;
+}
+
+typedef MessageReturn = {
+  /**
+    A unique identifier for the message. Message IDs are considered unique across all AWS accounts for an extended
+    period of time.
+   **/
+  var MessageId:String;
+
+  /**
+    An identifier associated with the act of receiving the message. A new receipt handle is returned every time you
+    receive a message. When deleting a message, you provide the last received receipt handle to delete the message.
+   **/
+  var ReceiptHandle:String;
+
+  /**
+    An MD5 digest of the non-URL-encoded message body string.
+   **/
+  var MD5OfBody:String;
+
+  /**
+    The message's contents (not URL-encoded).
+   **/
+  var Body:String;
+
+  /**
+    SenderId, SentTimestamp, ApproximateReceiveCount, and/or ApproximateFirstReceiveTimestamp. SentTimestamp and
+    ApproximateFirstReceiveTimestamp are each returned as an integer representing the epoch time in milliseconds.
+   **/
+  var Attributes:haxe.DynamicAccess<String>;
+
+  /**
+    An MD5 digest of the non-URL-encoded message attribute string. This can be used to verify that Amazon SQS received
+    the message correctly. Amazon SQS first URL decodes the message before creating the MD5 digest. For information
+    about MD5, go to http://www.faqs.org/rfcs/rfc1321.html.
+   **/
+  var MD5OfMessageAttributes:String;
+
+  /**
+    Each message attribute consists of a Name, Type, and Value. For more information, see Message Attribute Items.
+   **/
+  var MessageAttributes:haxe.DynamicAccess<Dynamic>;
+
+  /**
+    Strings are Unicode with UTF8 binary encoding. For a list of code values, see
+    http://en.wikipedia.org/wiki/ASCII#ASCII_printable_characters.
+   **/
+  var StringValue:String;
+
+  /**
+    Binary type attributes can store any binary data, for example, compressed data, encrypted data, or images.
+   **/
+  var BinaryValue:js.node.Buffer;
+
+  /**
+    Not implemented. Reserved for future use.
+   **/
+  var StringListValues:Array<String>;
+
+  /**
+    Not implemented. Reserved for future use.
+   **/
+  var BinaryListValues:Array<js.node.Buffer>;
+
+  /**
+    Amazon SQS supports the following logical data types: String, Number, and Binary. For the Number data type, you
+    must use StringValue.
+    You can also append custom labels. For more information, see Message Attribute Data Types.
+   **/
+  var DataType:String;
 }
