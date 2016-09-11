@@ -1,6 +1,6 @@
 # Haxe/hxnodejs externs for the [aws-sdk](https://www.npmjs.com/package/aws-sdk) npm library
 
-Tested using `aws-sdk` version **2.2.42**
+Tested using `aws-sdk` version **2.6.1**
 
 Due to the huge size of the API, this only implements a small subset of the whole API, and
 from that, only a small part is correctly typed in regards to its possible arguments
@@ -13,6 +13,7 @@ and return type
 | SQS             | mixed      |
 | DynamoDB        | untyped    |
 | MetadataService | untyped    |
+| GameLift        | mixed      |
 
 Example:
 ```haxe
