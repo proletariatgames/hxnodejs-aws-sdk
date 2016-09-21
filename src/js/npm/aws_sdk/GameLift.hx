@@ -210,7 +210,9 @@ extern class GameLift extends Service {
    **/
   @:overload(function():Request {})
   @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function describeGameSessions(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  function describeGameSessions(params:{ ?AliasId:String, ?FleetId:String, ?GameSessionId:String, ?Limit:Int,
+    ?NextToken:String, ?StatusFilter:GameSessionStatus }, callback:js.Error->{ GameSessions:Array<GameSessionResponse>,
+      NextToken:String }->Void):Request;
 
   /**
     Retrieves properties for one or more player sessions.
