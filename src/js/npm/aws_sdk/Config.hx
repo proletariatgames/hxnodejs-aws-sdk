@@ -157,6 +157,8 @@ extern class Config {
   var s3ForcePathStyle:Bool;
 
   public function new(config:ConfigObj);
+
+  public function getCredentials(callback:js.Error->Null<Credentials>->Void):Void;
 }
 
 typedef ConfigObj = {
@@ -173,13 +175,13 @@ typedef ConfigObj = {
   /**
      the optional AWS session token to sign requests with.
    **/
-  // @:optional var sessionToken:Credentials;
+  @:optional var sessionToken:Credentials;
 
   /**
      the AWS credentials to sign requests with. You can either specify this object, or specify the accessKeyId and
      secretAccessKey options directly.
    **/
-  // @:optional var credentials:Credentials;
+  @:optional var credentials:Credentials;
 
   /**
      the provider chain used to resolve credentials if no static credentials property is set.
