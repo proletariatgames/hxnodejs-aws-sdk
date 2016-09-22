@@ -25,7 +25,7 @@ extern class Config {
      the AWS credentials to sign requests with. You can either specify this object, or specify the accessKeyId and
      secretAccessKey options directly.
    **/
-  // var credentials:Credentials;
+  var credentials:Credentials;
 
   var httpOptions:{
     /**
