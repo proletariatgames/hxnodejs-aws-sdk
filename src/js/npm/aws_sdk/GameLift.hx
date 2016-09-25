@@ -247,7 +247,33 @@ extern class GameLift extends Service {
    **/
   @:overload(function():Request {})
   @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
-  function listAliases(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
+  function listAliases(params:{
+    /**
+      Maximum number of results to return. Use this parameter with NextToken to get results as a set of sequential
+      pages.
+     **/
+    @:optional var Limit:Int;
+
+    /**
+      Descriptive label associated with an alias. Alias names do not need to be unique.
+     **/
+    @:optional var Name:String;
+
+    /**
+      Token indicating the start of the next sequential page of results. Use the token that is returned with a previous
+      call to this action. To specify the start of the result set, do not specify a value.
+     **/
+    @:optional var NextToken:String;
+
+    /**
+      Type of routing to filter results on. Use this parameter to retrieve only aliases of a certain type. To retrieve
+      all aliases, leave this parameter empty.
+     **/
+    @:optional var RoutingStrategyType:RoutingStrategyType;
+  }, callback:GameLiftError->{
+    NextToken:String,
+    Aliases:Array<AliasResponse>
+  }->Void):Request;
 
   /**
     Retrieves build records for all builds associated with the AWS account in use.
@@ -647,4 +673,62 @@ typedef GameLiftError = Error<GameLiftErrorCode>;
   var UnauthorizedException = "UnauthorizedException";
 
   var ThrottlingException = "ThrottlingException";
+}
+
+@:enum abstract RoutingStrategyType(String) from String {
+  var Simple = "SIMPLE";
+  var Terminal = "TERMINAL";
+}
+
+typedef AliasResponse = {
+  /**
+    Unique identifier for a fleet alias.
+   **/
+  var AliasId(default, null):String;
+
+  /**
+    Descriptive label associated with an alias. Alias names do not need to be unique.
+   **/
+  var Name(default, null):String;
+
+  /**
+    Human-readable description of an alias.
+   **/
+  var Description(default, null):String;
+
+  /**
+    Routing configuration for a fleet alias.
+   **/
+  var RoutingStrategy(default, null):{
+    var Type(default, null):RoutingStrategyType;
+    var FleetId(default, null):Null<String>;
+    var Message(default, null):Null<String>;
+  };
+
+  /**
+    Type of routing strategy.
+   **/
+  var Type(default, null):String;
+
+  /**
+    Unique identifier for a fleet.
+   **/
+  var FleetId(default, null):String;
+
+  /**
+    Message text to be used with a terminal routing strategy.
+   **/
+  var Message(default, null):String;
+
+  /**
+    Time stamp indicating when this data object was created. Format is a number expressed in Unix time as milliseconds
+    (ex: "1469498468.057".
+   **/
+  var CreationTime(default, null):Date;
+
+  /**
+    Time stamp indicating when this data object was last modified. Format is a number expressed in Unix time as
+    milliseconds (ex: "1469498468.057".
+   **/
+  var LastUpdatedTime(default, null):Date;
 }
