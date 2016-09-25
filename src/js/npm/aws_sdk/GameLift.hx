@@ -12,22 +12,22 @@ extern class GameLift extends Service {
     Creates an alias for a fleet.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function createAlias(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function createAlias(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Initializes a new build record and generates information required to upload a game build to Amazon GameLift.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function createBuild(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function createBuild(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Creates a new fleet to run your game servers.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function createFleet(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function createFleet(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Creates a multiplayer game session for players. This action creates a game session record and assigns the new
@@ -66,7 +66,7 @@ extern class GameLift extends Service {
       Set of properties used to administer a game session. These properties are passed to the server process hosting it.
      **/
     var GameProperties(default, null):Array<{ Key:String, Value:String }>;
-  }, callback:js.Error->{
+  }, callback:GameLiftError->{
     /**
       Object containing the newly created game session record.
      **/
@@ -86,7 +86,7 @@ extern class GameLift extends Service {
       Unique identifier for the player to be added.
      **/
     var PlayerId(default, null):String;
-  }, callback:js.Error->{
+  }, callback:GameLiftError->{
     /**
       Object containing the newly created player session record.
      **/
@@ -106,7 +106,7 @@ extern class GameLift extends Service {
       Unique identifier for the player to be added.
      **/
     var PlayerIds(default, null):Array<String>;
-  }, callback:js.Error->{
+  }, callback:GameLiftError->{
     /**
       Object containing the newly created player session record.
      **/
@@ -117,172 +117,172 @@ extern class GameLift extends Service {
     Deletes an alias.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function deleteAlias(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function deleteAlias(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Deletes a build.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function deleteBuild(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function deleteBuild(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Deletes everything related to a fleet.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function deleteFleet(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function deleteFleet(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Deletes a fleet scaling policy.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function deleteScalingPolicy(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function deleteScalingPolicy(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Retrieves properties for a specified alias.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function describeAlias(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function describeAlias(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Retrieves properties for a build.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function describeBuild(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function describeBuild(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Retrieves the following information for the specified EC2 instance type: maximum number of instances allowed per AWS
     account (service limit) current usage level for the AWS account Service limits vary depending on region.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function describeEC2InstanceLimits(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function describeEC2InstanceLimits(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Retrieves fleet properties, including metadata, status, and configuration, for one or more fleets.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function describeFleetAttributes(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function describeFleetAttributes(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Retrieves the current status of fleet capacity for one or more fleets.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function describeFleetCapacity(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function describeFleetCapacity(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Retrieves entries from the specified fleet's event log.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function describeFleetEvents(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function describeFleetEvents(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Retrieves the inbound connection permissions for a fleet.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function describeFleetPortSettings(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function describeFleetPortSettings(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Retrieves utilization statistics for one or more fleets.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function describeFleetUtilization(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function describeFleetUtilization(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Retrieves properties, including the protection policy in force, for one or more game sessions.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function describeGameSessionDetails(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function describeGameSessionDetails(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Retrieves properties for one or more game sessions.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
   function describeGameSessions(params:{ ?AliasId:String, ?FleetId:String, ?GameSessionId:String, ?Limit:Int,
-    ?NextToken:String, ?StatusFilter:GameSessionStatus }, callback:js.Error->{ GameSessions:Array<GameSessionResponse>,
+    ?NextToken:String, ?StatusFilter:GameSessionStatus }, callback:GameLiftError->{ GameSessions:Array<GameSessionResponse>,
       NextToken:String }->Void):Request;
 
   /**
     Retrieves properties for one or more player sessions.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function describePlayerSessions(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function describePlayerSessions(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Retrieves the current runtime configuration for the specified fleet.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function describeRuntimeConfiguration(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function describeRuntimeConfiguration(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Retrieves all scaling policies applied to a fleet.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function describeScalingPolicies(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function describeScalingPolicies(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Retrieves the location of stored game session logs for a specified game session.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function getGameSessionLogUrl(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function getGameSessionLogUrl(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Retrieves a collection of alias records for this AWS account.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function listAliases(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function listAliases(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Retrieves build records for all builds associated with the AWS account in use.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function listBuilds(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function listBuilds(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Retrieves a collection of fleet records for this AWS account.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function listFleets(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function listFleets(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Creates or updates a scaling policy for a fleet.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function putScalingPolicy(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function putScalingPolicy(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Retrieves a fresh set of upload credentials and the assigned Amazon S3 storage location for a specific build.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function requestUploadCredentials(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function requestUploadCredentials(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Retrieves the fleet ID that a specified alias is currently pointing to.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function resolveAlias(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function resolveAlias(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Retrieves a list of game sessions in a fleet that match a set of search criteria and sorts them in a specified
@@ -376,7 +376,7 @@ extern class GameLift extends Service {
       call to this action. To specify the start of the result set, do not specify a value.
      **/
     @:optional var NextToken:String;
-  }, callback:js.Error->{
+  }, callback:GameLiftError->{
     /**
       Collection of objects containing game session properties for each session matching the request.
      **/
@@ -393,51 +393,51 @@ extern class GameLift extends Service {
     Updates properties for an alias.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function updateAlias(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function updateAlias(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Updates metadata in a build record, including the build name and version.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function updateBuild(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function updateBuild(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Updates fleet properties, including name and description, for a fleet.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function updateFleetAttributes(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function updateFleetAttributes(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Updates capacity settings for a fleet.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function updateFleetCapacity(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function updateFleetCapacity(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Updates port settings for a fleet.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function updateFleetPortSettings(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function updateFleetPortSettings(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Updates game session properties.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function updateGameSession(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function updateGameSession(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 
   /**
     Updates the current runtime configuration for the specified fleet, which tells GameLift how to launch server
     processes on instances in the fleet.
    **/
   @:overload(function():Request {})
-  @:overload(function(callback:js.Error->Dynamic->Void):Request {})
-  function updateRuntimeConfiguration(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function updateRuntimeConfiguration(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
 }
 
 typedef GameSessionResponse = {
@@ -587,4 +587,64 @@ typedef PlayerSessionResponse = {
      time-out limit (60 seconds).
    **/
   var Timedout = "TIMEDOUT";
+}
+
+typedef GameLiftError = Error<GameLiftErrorCode>;
+
+@:enum abstract GameLiftErrorCode(String) from String {
+  /**
+    The game instance is currently full and cannot allow the requested player(s) to join. This exception occurs in
+    response to a CreatePlayerSession request.
+
+    HTTP Status Code: 400
+   **/
+  var GameSessionFullException = "GameSessionFullException";
+
+  /**
+    The service encountered an unrecoverable internal failure while processing the request. Clients can retry such
+    requests, either immediately or after a back-off period.
+
+    HTTP Status Code: 500
+   **/
+  var InternalServiceException = "InternalServiceException";
+
+  /**
+    The requested operation would cause a conflict with the current state of a resource associated with the request
+    and/or the game instance. Clients should not retry such requests without resolving the conflict.
+
+    HTTP Status Code: 400
+   **/
+  var InvalidGameSessionStatusException = "InvalidGameSessionStatusException";
+
+  /**
+    One or more parameters specified as part of the request are invalid. Correct the invalid parameters before retrying.
+
+    HTTP Status Code: 400
+   **/
+  var InvalidRequestException = "InvalidRequestException";
+
+  /**
+    A service resource associated with the request could not be found. Clients should not retry such requests
+
+    HTTP Status Code: 400
+   **/
+  var NotFoundException = "NotFoundException";
+
+  /**
+    The service is unable to resolve the routing for a particular alias because it has a terminal RoutingStrategy
+    associated with it. The message returned in this exception is the message defined in the routing strategy itself.
+    Such requests should only be retried if the routing strategy for the specified alias is modified.
+
+    HTTP Status Code: 400
+   **/
+  var TerminalRoutingStrategyException = "TerminalRoutingStrategyException";
+
+  /**
+    The client failed authentication. Clients should not retry such requests
+
+    HTTP Status Code: 400
+   **/
+  var UnauthorizedException = "UnauthorizedException";
+
+  var ThrottlingException = "ThrottlingException";
 }
