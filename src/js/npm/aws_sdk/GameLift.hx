@@ -673,6 +673,12 @@ typedef GameLiftError = Error<GameLiftErrorCode>;
   var UnauthorizedException = "UnauthorizedException";
 
   var ThrottlingException = "ThrottlingException";
+
+  /**
+    The specified fleet has no available instances to fulfill a request to create a new game session. Such requests
+    should only be retried once the fleet capacity has been increased.
+   **/
+  var FleetCapacityExceededException = "FleetCapacityExceededException";
 }
 
 @:enum abstract RoutingStrategyType(String) from String {
