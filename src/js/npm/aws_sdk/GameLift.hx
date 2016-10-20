@@ -219,7 +219,101 @@ extern class GameLift extends Service {
    **/
   @:overload(function():Request {})
   @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
-  function describePlayerSessions(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
+  function describePlayerSessions(params:{
+    /**
+      Unique identifier for the game session to get player sessions for.Game session ID format is as follows:
+      "arn:aws:gamelift:<region>::gamesession/fleet-<fleet ID>/<ID string>". The value of <ID string> is either a custom
+      ID string (if one was specified when the game session was created) an auto-generated string.
+     **/
+    @:optional var GameSessionId(default, null):String;
+
+    /**
+      Unique identifier for a player.
+     **/
+    @:optional var PlayerId(default, null):String;
+
+    /**
+      Unique identifier for a player session.
+     **/
+    @:optional var PlayerSessionId(default, null):String;
+
+    /**
+      Player session status to filter results on.
+     **/
+    @:optional var PlayerSessionStatusFilter(default, null):PlayerSessionStatus;
+
+    /**
+      Maximum number of results to return. Use this parameter with NextToken to get results as a set of sequential
+      pages. If a player session ID is specified, this parameter is ignored.
+     **/
+    @:optional var Limit(default, null):Int;
+
+    /**
+      Token indicating the start of the next sequential page of results. Use the token that is returned with a previous
+      call to this action. To specify the start of the result set, do not specify a value. If a player session ID is
+      specified, this parameter is ignored.
+     **/
+    @:optional var NextToken(default, null):String;
+  }, callback:GameLiftError->{
+    /**
+      Collection of objects containing properties for each player session that matches the request.
+     **/
+    var PlayerSessions:Array<{
+      /**
+        Unique identifier for a player session.
+       **/
+      var PlayerSessionId:String;
+
+      /**
+        Unique identifier for a player.
+       **/
+      var PlayerId:String;
+
+      /**
+        Unique identifier for the game session that the player session is connected to.
+       **/
+      var GameSessionId:String;
+
+      /**
+        Unique identifier for a fleet.
+       **/
+      var FleetId:String;
+
+      /**
+        Time stamp indicating when this data object was created. Format is a number expressed in Unix time as
+        milliseconds (ex: "1469498468.057".
+       **/
+      var CreationTime:Float;
+
+      /**
+        Time stamp indicating when this data object was terminated. Format is a number expressed in Unix time as
+        milliseconds (ex: "1469498468.057".
+       **/
+      var TerminationTime:Float;
+
+      /**
+        Current status of the player session.
+       **/
+      var Status:PlayerSessionStatus;
+
+      /**
+        Game session IP address. All player sessions reference the game session location.
+       **/
+      var IpAddress:String;
+
+      /**
+        Port number for the game session. To connect to a GameLift server process, an app needs both the IP address and
+        port number.
+       **/
+      var Port:Int;
+    }>;
+
+    /**
+      Token indicating where to resume retrieving results on the next call to this action. If no token is returned,
+      these results represent the end of the list.
+     **/
+    var NextToken:String;
+  }->Void):Request;
 
   /**
     Retrieves the current runtime configuration for the specified fleet.
