@@ -160,7 +160,7 @@ extern class DynamoDB extends Service {
   /**
     The Scan operation returns one or more items and item attributes by accessing every item in a table or a secondary index.
 
-    If the total Float of scanned items exceeds the maximum data set size limit of 1 MB, the scan stops and results
+    If the total number of scanned items exceeds the maximum data set size limit of 1 MB, the scan stops and results
     are returned to the user as a LastEvaluatedKey value to continue the scan in a subsequent operation. The results
     also include the Float of items exceeding the limit. A scan can result in no table data meeting the filter
     criteria.
@@ -233,7 +233,7 @@ typedef UpdateItemRequest = {
   @:optional var AttributeUpdates: Dynamic<{
     var Action: String;
     var Value: AttributeValue;
-  },
+  }>;
   @:optional var ReturnConsumedCapacity: ReturnConsumedCapacity;
   @:optional var ReturnItemCollectionMetrics: ReturnItemCollectionMetrics;
   @:optional var ReturnValues: ReturnValues;
@@ -294,7 +294,7 @@ typedef UpdateItemRequest = {
     For more information on update expressions, see Modifying Items and Attributes in the Amazon DynamoDB Developer
     Guide.
   **/
-  @:optional var UpdateExpression: String
+  @:optional var UpdateExpression: String;
 }
 
 @:enum abstract ConditionalOperator(String)
@@ -305,7 +305,7 @@ typedef UpdateItemRequest = {
 
 typedef Condition = {
   var AttributeValueList: Array<AttributeValue>;
-  var ComparisonOperator: String
+  var ComparisonOperator: String;
 }
 
 typedef ScanRequest = {
@@ -380,7 +380,7 @@ typedef ScanRequest = {
   **/
   @:optional var Segment: Float;
   @:optional var Select: SelectKind;
-  @:optional var TotalSegments: Float
+  @:optional var TotalSegments: Float;
 }
 
 @:enum abstract SelectKind(String)
@@ -421,7 +421,7 @@ typedef ScanRequest = {
 typedef QueryRequest = {
   > ConditionalRequest,
   > AttributeRequest,
-  var TableName: String
+  var TableName: String;
   @:optional var AttributesToGet: Array< String >;
   /**
     Determines the read consistency model: If set to true, then the operation uses strongly consistent reads;
@@ -673,7 +673,7 @@ typedef ConditionalRequest = {
     var ComparisonOperator: String;
     var Exists: Bool;
     var Value:AttributeValue;
-  };
+  }>;
 }
 
 @:enum abstract ReturnConsumedCapacity(String)
@@ -701,6 +701,7 @@ typedef ConditionalRequest = {
 typedef DeleteItemRequest =
 {
   > ConditionalRequest,
+  > AttributeRequest,
    /**
     A map of attribute names to AttributeValue objects, representing the primary key of the item to delete.
 
@@ -745,8 +746,13 @@ typedef ConsumedCapacity = {
   var GlobalSecondaryIndexes: Dynamic<{ CapacityUnits:Float }>;
   var LocalSecondaryIndexes: Dynamic<{ CapacityUnits:Float }>;
   var Table:{ CapacityUnits:Float };
-  var TableName: String
+  var TableName: String;
 }
+
+typedef ItemCollectionMetrics = {
+  var ItemCollectionKey: AttributeValue;
+  var SizeEstimateRangeGB: Array< Float >;
+};
 
 typedef DeleteItemResponse = {
     /**
@@ -760,11 +766,8 @@ typedef DeleteItemResponse = {
     ConsumedCapacity is only returned if the ReturnConsumedCapacity parameter was specified. For more information, see
     Provisioned Throughput in the Amazon DynamoDB Developer Guide.
    **/
-   var ConsumedCapacity: ConsumedCapacity,
-   var ItemCollectionMetrics: {
-      var ItemCollectionKey: AttributeValue;
-      var SizeEstimateRangeGB: Array< Float >;
-   }
+   var ConsumedCapacity: ConsumedCapacity;
+   var ItemCollectionMetrics: ItemCollectionMetrics;
 }
 
 @:enum abstract KeyType(String)
@@ -821,7 +824,7 @@ typedef TableDescription = {
         var AttributeName: String;
         var AttributeType: String;
       }
-  >,
+  >;
   var CreationDateTime: Float;
   @:optional var GlobalSecondaryIndexes: Array<
       {
@@ -1029,7 +1032,7 @@ typedef BatchGetItemResponse = {
     var ConsistentRead:Bool;
     var ExpressionAttributeNames:Dynamic<String>;
     var Keys:Array<Dynamic<AttributeValue>>;
-  }
+  }>;
 }
 
 abstract Base64String(String)
@@ -1041,7 +1044,7 @@ abstract Base64String(String)
 
   @:from inline public static function fromBytes(b:haxe.io.Bytes):Base64String
   {
-    return haxe.crypto.Base64.encode(b, true);
+    return cast haxe.crypto.Base64.encode(b, true);
   }
 
   inline public function asString()
@@ -1097,7 +1100,7 @@ typedef DDBAttributeResponse = {
   >DDBStringSet,
 };
 
-abstract AttributeValue(Dynamic) from DDBBinary from DDBBoll from DDBBinarySet from DDBList from DDBMap from DDBNumber from DDBNumberSet
+abstract AttributeValue(Dynamic) from DDBBinary from DDBBool from DDBBinarySet from DDBList from DDBMap from DDBNumber from DDBNumberSet
                                  from DDBNull from DDBString from DDBStringSet
 {
   inline public function asResponse():DDBAttributeResponse
