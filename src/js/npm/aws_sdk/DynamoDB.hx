@@ -189,6 +189,51 @@ extern class DynamoDB extends Service {
   }->Void):Request;
 
   /**
+    TransactWriteItems is a synchronous write operation that groups up to 25 action requests. These actions can target
+    items in different tables, but not in different AWS accounts or Regions, and no two actions can target the same
+    item. For example, you cannot both ConditionCheck and Update the same item. The aggregate size of the items in the
+    transaction cannot exceed 4 MB.  All AWS Regions and AWS GovCloud (US) support up to 25 items per transaction with
+    up to 4 MB of data, except the following AWS Regions:
+      China (Beijing)
+      China (Ningxia)
+    The China (Beijing) and China (Ningxia) Regions support up to 10 items per transaction with up to 4 MB of data.
+
+    The actions are completed atomically so that either all of them succeed, or all of them fail. They are defined by
+    the following objects:
+      Put - Initiates a PutItem operation to write a new item. This structure specifies the primary key of the item to
+        be written, the name of the table to write it in, an optional condition expression that must be satisfied for
+        the write to succeed, a list of the item's attributes, and a field indicating whether to retrieve the item's
+        attributes if the condition is not met.
+      Update - Initiates an UpdateItem operation to update an existing item. This structure specifies the primary key of
+        the item to be updated, the name of the table where it resides, an optional condition expression that must be
+        satisfied for the update to succeed, an expression that defines one or more attributes to be updated, and a
+        field indicating whether to retrieve the item's attributes if the condition is not met.
+      Delete - Initiates a DeleteItem operation to delete an existing item. This structure specifies the primary key of
+        the item to be deleted, the name of the table where it resides, an optional condition expression that must be
+        satisfied for the deletion to succeed, and a field indicating whether to retrieve the item's attributes if the
+        condition is not met.
+      ConditionCheck - Applies a condition to an item that is not being modified by the transaction. This structure
+        specifies the primary key of the item to be checked, the name of the table where it resides, a condition
+        expression that must be satisfied for the transaction to succeed, and a field indicating whether to retrieve the
+        item's attributes if the condition is not met.
+
+    DynamoDB rejects the entire TransactWriteItems request if any of the following is true:
+      A condition in one of the condition expressions is not met.
+      An ongoing operation is in the process of updating the same item.
+      There is insufficient provisioned capacity for the transaction to be completed.
+      An item size becomes too large (bigger than 400 KB), a local secondary index (LSI) becomes too large, or a similar
+        validation error occurs because of changes made by the transaction.
+      The aggregate size of the items in the transaction exceeds 4 MB.
+      There is a user error, such as an invalid data format.
+  **/
+  @:overload(function ():Request {})
+  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
+  function transactWriteItems(params:TransactWriteItemsInput, callback:js.Error->{
+    ConsumedCapacity:Array<ConsumedCapacity>,
+    ItemCollectionMetrics:Dynamic<Array<ItemCollectionMetrics>>
+  }->Void):Request;
+
+  /**
     Edits an existing item's attributes, or adds a new item to the table if it does not already exist. You can put,
     delete, or add attribute values. You can also perform a conditional update on an existing item (insert a new
     attribute name-value pair if it doesn't exist, or replace an existing name-value pair if it has certain expected
@@ -208,6 +253,167 @@ extern class DynamoDB extends Service {
   @:overload(function ():Request {})
   @:overload(function (callback:js.Error->Dynamic->Void):Request {})
   function updateTable(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+}
+
+typedef TransactWriteItemsInput = {
+  /**
+    An ordered array of up to 25 TransactWriteItem objects, each of which contains a ConditionCheck, Put, Update, or
+    Delete object. These can operate on items in different tables, but the tables must reside in the same AWS account
+    and Region, and no two of them can operate on the same item.
+    */
+  var TransactItems: Array<TransactWriteItem>;
+  @:optional var ReturnConsumedCapacity: String;
+  /**
+    Determines whether item collection metrics are returned. If set to SIZE, the response includes statistics about item
+    collections (if any), that were modified during the operation and are returned in the response. If set to NONE (the
+    default), no statistics are returned.
+    */
+  @:optional var ReturnItemCollectionMetrics: String;
+  /**
+    Providing a ClientRequestToken makes the call to TransactWriteItems idempotent, meaning that multiple identical
+    calls have the same effect as one single call. Although multiple identical calls using the same client request token
+    produce the same result on the server (no side effects), the responses to the calls might not be the same. If the
+    ReturnConsumedCapacity&gt; parameter is set, then the initial TransactWriteItems call returns the amount of write
+    capacity units consumed in making the changes. Subsequent TransactWriteItems calls with the same client token return
+    the number of read capacity units consumed in reading the item. A client request token is valid for 10 minutes after
+    the first request that uses it is completed. After 10 minutes, any request with the same client token is treated as
+    a new request. Do not resubmit the same request with the same client token for more than 10 minutes, or the result
+    might not be idempotent. If you submit a request with the same client token but a change in other parameters within
+    the 10-minute idempotency window, DynamoDB returns an IdempotentParameterMismatch exception.
+    */
+  @:optional var ClientRequestToken: String;
+}
+
+typedef TransactWriteItem = {
+  /**
+    * A request to perform a check item operation.
+    */
+  @:optional var ConditionCheck: ConditionCheck;
+  /**
+    * A request to perform a PutItem operation.
+    */
+  @:optional var Put: Put;
+  /**
+    * A request to perform a DeleteItem operation.
+    */
+  @:optional var Delete: Delete;
+  /**
+    * A request to perform an UpdateItem operation.
+    */
+  @:optional var Update: Update;
+}
+
+typedef ConditionCheck = {
+  /**
+    * The primary key of the item to be checked. Each element consists of an attribute name and a value for that attribute.
+    */
+  var Key: Dynamic<AttributeValue>;
+  /**
+    * Name of the table for the check item request.
+    */
+  var TableName: String;
+  /**
+    * A condition that must be satisfied in order for a conditional update to succeed.
+    */
+  var ConditionExpression: String;
+  /**
+    * One or more substitution tokens for attribute names in an expression.
+    */
+  @:optional var ExpressionAttributeNames: Dynamic;
+  /**
+    * One or more values that can be substituted in an expression.
+    */
+  @:optional var ExpressionAttributeValues: Dynamic;
+  /**
+    Use ReturnValuesOnConditionCheckFailure to get the item attributes if the ConditionCheck condition fails. For
+    ReturnValuesOnConditionCheckFailure, the valid values are: NONE and ALL_OLD.
+    */
+  @:optional var ReturnValuesOnConditionCheckFailure: String;
+}
+
+typedef Put = {
+  /**
+    * A map of attribute name to attribute values, representing the primary key of the item to be written by PutItem. All of the table's primary key attributes must be specified, and their data types must match those of the table's key schema. If any attributes are present in the item that are part of an index key schema for the table, their types must match the index key schema.
+    */
+  var Item: Dynamic<AttributeValue>;
+  /**
+    * Name of the table in which to write the item.
+    */
+  var TableName: String;
+  /**
+    * A condition that must be satisfied in order for a conditional update to succeed.
+    */
+  @:optional var ConditionExpression: String;
+  /**
+    * One or more substitution tokens for attribute names in an expression.
+    */
+  @:optional var ExpressionAttributeNames: Dynamic;
+  /**
+    * One or more values that can be substituted in an expression.
+    */
+  @:optional var ExpressionAttributeValues: Dynamic;
+  /**
+    * Use ReturnValuesOnConditionCheckFailure to get the item attributes if the Put condition fails. For ReturnValuesOnConditionCheckFailure, the valid values are: NONE and ALL_OLD.
+    */
+  @:optional var ReturnValuesOnConditionCheckFailure: String;
+}
+
+typedef Delete = {
+  /**
+    * The primary key of the item to be deleted. Each element consists of an attribute name and a value for that attribute.
+    */
+  var Key: Dynamic<AttributeValue>;
+  /**
+    * Name of the table in which the item to be deleted resides.
+    */
+  var TableName: String;
+  /**
+    * A condition that must be satisfied in order for a conditional delete to succeed.
+    */
+  @:optional var ConditionExpression: String;
+  /**
+    * One or more substitution tokens for attribute names in an expression.
+    */
+  @:optional var ExpressionAttributeNames: Dynamic;
+  /**
+    * One or more values that can be substituted in an expression.
+    */
+  @:optional var ExpressionAttributeValues: Dynamic;
+  /**
+    * Use ReturnValuesOnConditionCheckFailure to get the item attributes if the Delete condition fails. For ReturnValuesOnConditionCheckFailure, the valid values are: NONE and ALL_OLD.
+    */
+  @:optional var ReturnValuesOnConditionCheckFailure: String;
+}
+
+typedef Update = {
+  /**
+    * The primary key of the item to be updated. Each element consists of an attribute name and a value for that attribute.
+    */
+  var Key: String;
+  /**
+    * An expression that defines one or more attributes to be updated, the action to be performed on them, and new value(s) for them.
+    */
+  var UpdateExpression: String;
+  /**
+    * Name of the table for the UpdateItem request.
+    */
+  var TableName: String;
+  /**
+    * A condition that must be satisfied in order for a conditional update to succeed.
+    */
+  @:optional var ConditionExpression: String;
+  /**
+    * One or more substitution tokens for attribute names in an expression.
+    */
+  @:optional var ExpressionAttributeNames: Dynamic;
+  /**
+    * One or more values that can be substituted in an expression.
+    */
+  @:optional var ExpressionAttributeValues: Dynamic;
+  /**
+    * Use ReturnValuesOnConditionCheckFailure to get the item attributes if the Update condition fails. For ReturnValuesOnConditionCheckFailure, the valid values are: NONE, ALL_OLD, UPDATED_OLD, ALL_NEW, UPDATED_NEW.
+    */
+  @:optional var ReturnValuesOnConditionCheckFailure: String;
 }
 
 typedef UpdateItemRequest = {
