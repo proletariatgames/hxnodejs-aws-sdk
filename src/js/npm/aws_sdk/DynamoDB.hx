@@ -27,22 +27,22 @@ extern class DynamoDB extends Service {
     into one data set.
   **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->BatchGetItemResponse->Void):Request {})
-  function batchGetItem(params:BatchGetItemRequest, callback:js.Error->BatchGetItemResponse->Void):Request;
+  @:overload(function (callback:js.lib.Error->BatchGetItemResponse->Void):Request {})
+  function batchGetItem(params:BatchGetItemRequest, callback:js.lib.Error->BatchGetItemResponse->Void):Request;
 
   /**
     The BatchWriteItem operation puts or deletes multiple items in one or more tables.
   **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  function batchWriteItem(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function (callback:js.lib.Error->Dynamic->Void):Request {})
+  function batchWriteItem(params:Dynamic, callback:js.lib.Error->Dynamic->Void):Request;
 
   /**
     The CreateTable operation adds a new table to your account.
   **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  function createTable(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function (callback:js.lib.Error->Dynamic->Void):Request {})
+  function createTable(params:Dynamic, callback:js.lib.Error->Dynamic->Void):Request;
 
   /**
     Deletes a single item in a table by primary key.
@@ -57,36 +57,36 @@ extern class DynamoDB extends Service {
     DynamoDB performs the delete. Otherwise, the item is not deleted.
   **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  function deleteItem(params:DeleteItemRequest, callback:js.Error->DeleteItemResponse->Void):Request;
+  @:overload(function (callback:js.lib.Error->Dynamic->Void):Request {})
+  function deleteItem(params:DeleteItemRequest, callback:js.lib.Error->DeleteItemResponse->Void):Request;
 
   /**
     The DeleteTable operation deletes a table and all of its items.
   **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  function deleteTable(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function (callback:js.lib.Error->Dynamic->Void):Request {})
+  function deleteTable(params:Dynamic, callback:js.lib.Error->Dynamic->Void):Request;
 
   /**
     Returns the current provisioned-capacity limits for your AWS account in a region, both for the region as a whole and for any one DynamoDB table that you create there.
   **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  function describeLimits(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function (callback:js.lib.Error->Dynamic->Void):Request {})
+  function describeLimits(params:Dynamic, callback:js.lib.Error->Dynamic->Void):Request;
 
   /**
     Returns information about the table, including the current status of the table, when it was created, the primary key schema, and any indexes on the table.
   **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  function describeTable(params:{ TableName:String }, callback:js.Error->{ Table:TableDescription }->Void):Request;
+  @:overload(function (callback:js.lib.Error->Dynamic->Void):Request {})
+  function describeTable(params:{ TableName:String }, callback:js.lib.Error->{ Table:TableDescription }->Void):Request;
 
   /**
     The GetItem operation returns a set of attributes for the item with the given primary key.
   **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  function getItem(params:GetItemRequest, callback:js.Error->{
+  @:overload(function (callback:js.lib.Error->Dynamic->Void):Request {})
+  function getItem(params:GetItemRequest, callback:js.lib.Error->{
     ConsumedCapacity:ConsumedCapacity,
     Item:Dynamic<AttributeValue>
   }->Void):Request;
@@ -95,15 +95,15 @@ extern class DynamoDB extends Service {
     Returns an array of table names associated with the current account and endpoint.
   **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  function listTables(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function (callback:js.lib.Error->Dynamic->Void):Request {})
+  function listTables(params:Dynamic, callback:js.lib.Error->Dynamic->Void):Request;
 
   /**
     Creates a new item, or replaces an old item with a new item.
   **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  function putItem(params:PutItemRequest, callback:js.Error->{
+  @:overload(function (callback:js.lib.Error->Dynamic->Void):Request {})
+  function putItem(params:PutItemRequest, callback:js.lib.Error->{
     Attributes:Dynamic<AttributeValue>,
     ConsumedCapacity:ConsumedCapacity,
     ItemCollectionMetrics:ItemCollectionMetrics
@@ -148,8 +148,8 @@ extern class DynamoDB extends Service {
     secondary index.
   **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  function query(params:QueryRequest, callback:js.Error->{
+  @:overload(function (callback:js.lib.Error->Dynamic->Void):Request {})
+  function query(params:QueryRequest, callback:js.lib.Error->{
     ConsumedCapacity:ConsumedCapacity,
     Count:Int,
     Items:Array<Dynamic<AttributeValue>>,
@@ -179,8 +179,8 @@ extern class DynamoDB extends Service {
     the data, as of the time that the Scan begins, you can set the ConsistentRead parameter to true.
   **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  function scan(params:ScanRequest, callback:js.Error->{
+  @:overload(function (callback:js.lib.Error->Dynamic->Void):Request {})
+  function scan(params:ScanRequest, callback:js.lib.Error->{
     ConsumedCapacity:ConsumedCapacity,
     Count:Int,
     Items:Array<Dynamic<AttributeValue>>,
@@ -227,8 +227,8 @@ extern class DynamoDB extends Service {
       There is a user error, such as an invalid data format.
   **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  function transactWriteItems(params:TransactWriteItemsInput, callback:js.Error->{
+  @:overload(function (callback:js.lib.Error->Dynamic->Void):Request {})
+  function transactWriteItems(params:TransactWriteItemsInput, callback:js.lib.Error->{
     ConsumedCapacity:Array<ConsumedCapacity>,
     ItemCollectionMetrics:Dynamic<Array<ItemCollectionMetrics>>
   }->Void):Request;
@@ -240,8 +240,8 @@ extern class DynamoDB extends Service {
     attribute values).
   **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  function updateItem(params:UpdateItemRequest, callback:js.Error->{
+  @:overload(function (callback:js.lib.Error->Dynamic->Void):Request {})
+  function updateItem(params:UpdateItemRequest, callback:js.lib.Error->{
     Attributes:Dynamic<AttributeValue>,
     ConsumedCapacity:ConsumedCapacity,
     ItemCollectionMetrics:ItemCollectionMetrics
@@ -251,8 +251,8 @@ extern class DynamoDB extends Service {
     Modifies the provisioned throughput settings, global secondary indexes, or DynamoDB Streams settings for a given table.
   **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  function updateTable(params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function (callback:js.lib.Error->Dynamic->Void):Request {})
+  function updateTable(params:Dynamic, callback:js.lib.Error->Dynamic->Void):Request;
 }
 
 typedef TransactWriteItemsInput = {

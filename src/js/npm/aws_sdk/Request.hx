@@ -105,8 +105,8 @@ extern class Request extends EventEmitter<Request> {
   /**
     Iterates over each page of results given a pageable request, calling the provided callback with each page of data.
    **/
-  @:overload(function(callback:js.Error->Dynamic->(Void->Void)->Void):Void {})
-  function eachPage(callback:js.Error->Dynamic->Void):Void;
+  @:overload(function(callback:js.lib.Error->Dynamic->(Void->Void)->Void):Void {})
+  function eachPage(callback:js.lib.Error->Dynamic->Void):Void;
 
   /**
     Whether the operation can return multiple pages of response data.
@@ -117,5 +117,5 @@ extern class Request extends EventEmitter<Request> {
     Sends the request object.
    **/
   @:overload(function():Void {})
-  function send(callback:js.Error->Dynamic->Void):Void;
+  function send(callback:js.lib.Error->Dynamic->Void):Void;
 }

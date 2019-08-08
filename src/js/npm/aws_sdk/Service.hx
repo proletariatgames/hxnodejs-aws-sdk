@@ -13,12 +13,12 @@ extern class Service {
   /**
     Calls an operation on a service with the given input parameters.
    **/
-  function makeRequest(operation:String, params:Dynamic, callback:js.Error->Dynamic->Void):Void;
+  function makeRequest(operation:String, params:Dynamic, callback:js.lib.Error->Dynamic->Void):Void;
 
   /**
     Calls an operation on a service with the given input parameters, without any authentication data.
    **/
-  function makeUnauthenticatedRequest(operation:String, params:Dynamic, callback:js.Error->Dynamic->Void):Void;
+  function makeUnauthenticatedRequest(operation:String, params:Dynamic, callback:js.lib.Error->Dynamic->Void):Void;
 
   /**
     Override this method to setup any custom request listeners for each new request to the service.
@@ -29,6 +29,6 @@ extern class Service {
     Waits for a given state.
    **/
   @:overload(function ():Request {})
-  @:overload(function (state:String, callback:js.Error->Dynamic->Void):Request {})
-  function waitFor(state:String, params:Dynamic, callback:js.Error->Dynamic->Void):Request;
+  @:overload(function (state:String, callback:js.lib.Error->Dynamic->Void):Request {})
+  function waitFor(state:String, params:Dynamic, callback:js.lib.Error->Dynamic->Void):Request;
 }
