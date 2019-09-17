@@ -1,4 +1,9 @@
 package js.npm.aws_sdk;
+#if haxe4
+import js.lib.Error;
+#else
+import js.Error;
+#end
 
 @:jsRequire("aws-sdk","Service")
 extern class Service {
@@ -13,12 +18,12 @@ extern class Service {
   /**
     Calls an operation on a service with the given input parameters.
    **/
-  function makeRequest(operation:String, params:Dynamic, callback:js.lib.Error->Dynamic->Void):Void;
+  function makeRequest(operation:String, params:Dynamic, callback:Error->Dynamic->Void):Void;
 
   /**
     Calls an operation on a service with the given input parameters, without any authentication data.
    **/
-  function makeUnauthenticatedRequest(operation:String, params:Dynamic, callback:js.lib.Error->Dynamic->Void):Void;
+  function makeUnauthenticatedRequest(operation:String, params:Dynamic, callback:Error->Dynamic->Void):Void;
 
   /**
     Override this method to setup any custom request listeners for each new request to the service.
@@ -29,6 +34,6 @@ extern class Service {
     Waits for a given state.
    **/
   @:overload(function ():Request {})
-  @:overload(function (state:String, callback:js.lib.Error->Dynamic->Void):Request {})
-  function waitFor(state:String, params:Dynamic, callback:js.lib.Error->Dynamic->Void):Request;
+  @:overload(function (state:String, callback:Error->Dynamic->Void):Request {})
+  function waitFor(state:String, params:Dynamic, callback:Error->Dynamic->Void):Request;
 }

@@ -1,5 +1,10 @@
 package js.npm.aws_sdk;
 import js.node.events.EventEmitter;
+#if haxe4
+import js.lib.Error;
+#else
+import js.Error;
+#end
 
 @:jsRequire("aws-sdk","SQS")
 extern class SQS extends Service {
@@ -10,91 +15,91 @@ extern class SQS extends Service {
     Adds a permission to a queue for a specific principal.
    **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  public function addPermission(params:Dynamic, callback:js.Error->Dynamic->Void) : Request;
+  @:overload(function (callback:Error->Dynamic->Void):Request {})
+  public function addPermission(params:Dynamic, callback:Error->Dynamic->Void) : Request;
 
   /**
     Changes the visibility timeout of a specified message in a queue to a new value.
    **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  public function changeMessageVisibility(params:Dynamic, callback:js.Error->Dynamic->Void) : Request;
+  @:overload(function (callback:Error->Dynamic->Void):Request {})
+  public function changeMessageVisibility(params:Dynamic, callback:Error->Dynamic->Void) : Request;
 
   /**
     Changes the visibility timeout of multiple messages.
    **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  public function changeMessageVisibilityBatch(params:Dynamic, callback:js.Error->Dynamic->Void) : Request;
+  @:overload(function (callback:Error->Dynamic->Void):Request {})
+  public function changeMessageVisibilityBatch(params:Dynamic, callback:Error->Dynamic->Void) : Request;
 
   /**
     Creates a new queue, or returns the URL of an existing one.
    **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  public function createQueue(params:Dynamic, callback:js.Error->Dynamic->Void) : Request;
+  @:overload(function (callback:Error->Dynamic->Void):Request {})
+  public function createQueue(params:Dynamic, callback:Error->Dynamic->Void) : Request;
 
   /**
     Deletes the specified message from the specified queue.
    **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  public function deleteMessage(params:Dynamic, callback:js.Error->Dynamic->Void) : Request;
+  @:overload(function (callback:Error->Dynamic->Void):Request {})
+  public function deleteMessage(params:Dynamic, callback:Error->Dynamic->Void) : Request;
 
   /**
     Deletes up to ten messages from the specified queue.
    **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  public function deleteMessageBatch(params:Dynamic, callback:js.Error->Dynamic->Void) : Request;
+  @:overload(function (callback:Error->Dynamic->Void):Request {})
+  public function deleteMessageBatch(params:Dynamic, callback:Error->Dynamic->Void) : Request;
 
   /**
     Deletes the queue specified by the queue URL, regardless of whether the queue is empty.
    **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  public function deleteQueue(params:Dynamic, callback:js.Error->Dynamic->Void) : Request;
+  @:overload(function (callback:Error->Dynamic->Void):Request {})
+  public function deleteQueue(params:Dynamic, callback:Error->Dynamic->Void) : Request;
 
   /**
     Gets attributes for the specified queue.
    **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  public function getQueueAttributes(params:Dynamic, callback:js.Error->Dynamic->Void) : Request;
+  @:overload(function (callback:Error->Dynamic->Void):Request {})
+  public function getQueueAttributes(params:Dynamic, callback:Error->Dynamic->Void) : Request;
 
   /**
     Returns the URL of an existing queue.
    **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  public function getQueueUrl(params:Dynamic, callback:js.Error->Dynamic->Void) : Request;
+  @:overload(function (callback:Error->Dynamic->Void):Request {})
+  public function getQueueUrl(params:Dynamic, callback:Error->Dynamic->Void) : Request;
 
   /**
     Returns a list of your queues that have the RedrivePolicy queue attribute configured with a dead letter queue.
    **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  public function listDeadLetterSourceQueues(params:Dynamic, callback:js.Error->Dynamic->Void) : Request;
+  @:overload(function (callback:Error->Dynamic->Void):Request {})
+  public function listDeadLetterSourceQueues(params:Dynamic, callback:Error->Dynamic->Void) : Request;
 
   /**
     Returns a list of your queues.
    **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  public function listQueues(params:Dynamic, callback:js.Error->Dynamic->Void) : Request;
+  @:overload(function (callback:Error->Dynamic->Void):Request {})
+  public function listQueues(params:Dynamic, callback:Error->Dynamic->Void) : Request;
 
   /**
     Deletes the messages in a queue specified by the queue URL.
    **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  public function purgeQueue(params:Dynamic, callback:js.Error->Dynamic->Void) : Request;
+  @:overload(function (callback:Error->Dynamic->Void):Request {})
+  public function purgeQueue(params:Dynamic, callback:Error->Dynamic->Void) : Request;
 
   /**
     Retrieves one or more messages, with a maximum limit of 10 messages, from the specified queue.
    **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
+  @:overload(function (callback:Error->Dynamic->Void):Request {})
   public function receiveMessage(params:{
     /**
       The URL of the Amazon SQS queue to take action on.
@@ -151,35 +156,35 @@ extern class SQS extends Service {
      **/
     @:optional var WaitTimeSeconds(default, null):Int;
 
-  }, callback:js.Error->{ Messages: Array<MessageReturn>}->Void) : Request;
+  }, callback:Error->{ Messages: Array<MessageReturn>}->Void) : Request;
 
   /**
     Revokes any permissions in the queue policy that matches the specified Label parameter.
    **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  public function removePermission(params:Dynamic, callback:js.Error->Dynamic->Void) : Request;
+  @:overload(function (callback:Error->Dynamic->Void):Request {})
+  public function removePermission(params:Dynamic, callback:Error->Dynamic->Void) : Request;
 
   /**
     Delivers a message to the specified queue.
    **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  public function sendMessage(params:Dynamic, callback:js.Error->Dynamic->Void) : Request;
+  @:overload(function (callback:Error->Dynamic->Void):Request {})
+  public function sendMessage(params:Dynamic, callback:Error->Dynamic->Void) : Request;
 
   /**
     Delivers up to ten messages to the specified queue.
    **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  public function sendMessageBatch(params:Dynamic, callback:js.Error->Dynamic->Void) : Request;
+  @:overload(function (callback:Error->Dynamic->Void):Request {})
+  public function sendMessageBatch(params:Dynamic, callback:Error->Dynamic->Void) : Request;
 
   /**
     Sets the value of one or more queue attributes.
    **/
   @:overload(function ():Request {})
-  @:overload(function (callback:js.Error->Dynamic->Void):Request {})
-  public function setQueueAttributes(params:Dynamic, callback:js.Error->Dynamic->Void) : Request;
+  @:overload(function (callback:Error->Dynamic->Void):Request {})
+  public function setQueueAttributes(params:Dynamic, callback:Error->Dynamic->Void) : Request;
 }
 
 typedef MessageReturn = {

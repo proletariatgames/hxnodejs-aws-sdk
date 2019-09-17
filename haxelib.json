@@ -5,9 +5,9 @@
   "classPath": "src",
   "tags": ["nodejs", "hxnodejs", "aws-sdk", "aws"],
   "description": "Externs for the aws-sdk NPM module",
-  "releasenote": "Initial release",
-  "version": "2.493.0",
-  "contributors": ["Proletariat", "lpetre", "danogles", "waneck"],
+  "releasenote": "Update to Haxe 4",
+  "version": "2.493.1",
+  "contributors": ["Proletariat", "danogles", "waneck"],
   "dependencies": {
     "hxnodejs": ""
   }

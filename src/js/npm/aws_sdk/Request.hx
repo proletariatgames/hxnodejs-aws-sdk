@@ -1,5 +1,10 @@
 package js.npm.aws_sdk;
 import js.node.events.EventEmitter;
+#if haxe4
+import js.lib.Error;
+#else
+import js.Error;
+#end
 
 @:enum abstract RequestEvent<T:haxe.Constraints.Function>(Event<T>) to Event<T> {
   // Request Building Events
@@ -105,8 +110,8 @@ extern class Request extends EventEmitter<Request> {
   /**
     Iterates over each page of results given a pageable request, calling the provided callback with each page of data.
    **/
-  @:overload(function(callback:js.lib.Error->Dynamic->(Void->Void)->Void):Void {})
-  function eachPage(callback:js.lib.Error->Dynamic->Void):Void;
+  @:overload(function(callback:Error->Dynamic->(Void->Void)->Void):Void {})
+  function eachPage(callback:Error->Dynamic->Void):Void;
 
   /**
     Whether the operation can return multiple pages of response data.
@@ -117,5 +122,5 @@ extern class Request extends EventEmitter<Request> {
     Sends the request object.
    **/
   @:overload(function():Void {})
-  function send(callback:js.lib.Error->Dynamic->Void):Void;
+  function send(callback:Error->Dynamic->Void):Void;
 }

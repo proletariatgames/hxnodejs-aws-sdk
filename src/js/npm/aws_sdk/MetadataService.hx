@@ -1,4 +1,9 @@
 package js.npm.aws_sdk;
+#if haxe4
+import js.lib.Error;
+#else
+import js.Error;
+#end
 
 @:jsRequire("aws-sdk","MetadataService")
 extern class MetadataService extends Service {
@@ -26,6 +31,6 @@ extern class MetadataService extends Service {
    *   @param data [String, null] if the request was successful, the body of
    *     the response
    */
-  @:overload(function (callback:js.Error->Dynamic->Void):Void {})
-  function request(path:String, callback:js.Error->Dynamic->Void):Void;
+  @:overload(function (callback:Error->Dynamic->Void):Void {})
+  function request(path:String, callback:Error->Dynamic->Void):Void;
 }

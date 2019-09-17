@@ -1,6 +1,11 @@
 package js.npm.aws_sdk;
 import haxe.extern.EitherType;
 import haxe.DynamicAccess;
+#if haxe4
+import js.lib.Error;
+#else
+import js.Error;
+#end
 
 @:jsRequire("aws-sdk","Config")
 extern class Config {
@@ -158,7 +163,7 @@ extern class Config {
 
   public function new(config:ConfigObj);
 
-  public function getCredentials(callback:js.Error->Null<Credentials>->Void):Void;
+  public function getCredentials(callback:Error->Null<Credentials>->Void):Void;
 }
 
 typedef ConfigObj = {
