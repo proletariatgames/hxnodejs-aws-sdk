@@ -1,4 +1,5 @@
 package js.npm.aws_sdk;
+import haxe.DynamicAccess;
 
 @:jsRequire("aws-sdk","GameLift")
 extern class GameLift extends Service {
@@ -558,6 +559,299 @@ extern class GameLift extends Service {
   @:overload(function():Request {})
   @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
   function updateRuntimeConfiguration(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
+
+  ///////////////////
+  //// FlexMatch ////
+  ///////////////////
+
+  /**
+    Defines a new matchmaking configuration for use with FlexMatch. A
+    matchmaking configuration sets out guidelines for matching players and
+    getting the matches into games. You can set up multiple matchmaking
+    configurations to handle the scenarios needed for your game. Each
+    matchmaking ticket (StartMatchmaking or StartMatchBackfill) specifies a
+    configuration for the match and provides player attributes to support the
+    configuration being used.
+
+    To create a matchmaking configuration, at a minimum you must specify the
+    following: configuration name; a rule set that governs how to evaluate
+    players and find acceptable matches; a game session queue to use when
+    placing a new game session for the match; and the maximum time allowed
+    for a matchmaking attempt.
+
+    To track the progress of matchmaking tickets, set up an Amazon Simple
+    Notification Service (SNS) to receive notifications, and provide the
+    topic ARN in the matchmaking configuration. An alternative method,
+    continuously poling ticket status with DescribeMatchmaking, should only
+    be used for games in development with low matchmaking usage.
+  **/
+  @:overload(function():Request {})
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function createMatchmakingConfiguration(params:Dynamic, callback:GameLiftError->Dynamic->Void):Request;
+
+  /**
+    Uses FlexMatch to create a game match for a group of players based on custom matchmaking rules, and starts a new
+    game for the matched players. Each matchmaking request specifies the type of match to build (team configuration,
+    rules for an acceptable match, etc.). The request also specifies the players to find a match for and where to
+    host the new game session for optimal performance. A matchmaking request might start with a single player or a
+    group of players who want to play together. FlexMatch finds additional players as needed to fill the match. Match
+    type, rules, and the queue used to place a new game session are defined in a MatchmakingConfiguration.
+
+    To start matchmaking, provide a unique ticket ID, specify a matchmaking configuration, and include the players to
+    be matched. You must also include a set of player attributes relevant for the matchmaking configuration. If
+    successful, a matchmaking ticket is returned with status set to QUEUED.
+
+    Track the status of the ticket to respond as needed and acquire game session connection information for
+    successfully completed matches. Ticket status updates are tracked using event notification through Amazon Simple
+    Notification Service (SNS), which is defined in the matchmaking configuration.
+
+    Processing a matchmaking request -- FlexMatch handles a matchmaking request as follows:
+
+    1. Your client code submits a StartMatchmaking request for one or more players and tracks the status of the request
+    ticket.
+    2. FlexMatch uses this ticket and others in process to build an acceptable match. When a potential match is
+    identified, all tickets in the proposed match are advanced to the next status.
+    3. If the match requires player acceptance (set in the matchmaking configuration), the tickets move into status
+    REQUIRES_ACCEPTANCE. This status triggers your client code to solicit acceptance from all players in every ticket
+    involved in the match, and then call AcceptMatch for each player. If any player rejects or fails to accept the
+    match before a specified timeout, the proposed match is dropped (see AcceptMatch for more details).
+    4. Once a match is proposed and accepted, the matchmaking tickets move into status PLACING. FlexMatch locates
+    resources for a new game session using the game session queue (set in the matchmaking configuration) and creates
+    the game session based on the match data.
+    5. When the match is successfully placed, the matchmaking tickets move into COMPLETED status. Connection information
+    (including game session endpoint and player session) is added to the matchmaking tickets. Matched players can use
+    the connection information to join the game.
+  **/
+  @:overload(function():Request {})
+  @:overload(function(callback:GameLiftError->StartMatchmakingResponse->Void):Request {})
+  function startMatchmaking(params:StartMatchmakingRequest, callback:GameLiftError->StartMatchmakingResponse->Void):Request;
+
+  /**
+    Retrieves one or more matchmaking tickets. Use this operation to retrieve ticket information, including--after a
+    successful match is made--connection information for the resulting new game session.
+
+    To request matchmaking tickets, provide a list of up to 10 ticket IDs. If the request is successful, a ticket
+    object is returned for each requested ID that currently exists.
+
+    This operation is not designed to be continually called to track matchmaking ticket status. This practice can
+    cause you to exceed your API limit, which results in errors. Instead, as a best practice, set up an Amazon Simple
+    Notification Service (SNS) to receive notifications, and provide the topic ARN in the matchmaking configuration.
+    Continuously poling ticket status with DescribeMatchmaking should only be used for games in development with low
+    matchmaking usage.
+  **/
+  @:overload(function():Request {})
+  @:overload(function(callback:GameLiftError->{ TicketList:Array<MatchmakingTicket> }->Void):Request {})
+  function describeMatchmaking(params:{ TicketIds:Array<String> }, callback:GameLiftError->{ TicketList:Array<MatchmakingTicket> }->Void):Request;
+
+  /**
+    Registers a player's acceptance or rejection of a proposed FlexMatch match. A matchmaking configuration may
+    require player acceptance; if so, then matches built with that configuration cannot be completed unless all
+    players accept the proposed match within a specified time limit.
+
+    When FlexMatch builds a match, all the matchmaking tickets involved in the proposed match are placed into status
+    REQUIRES_ACCEPTANCE. This is a trigger for your game to get acceptance from all players in the ticket.
+    Acceptances are only valid for tickets when they are in this status; all other acceptances result in an error.
+
+    To register acceptance, specify the ticket ID, a response, and one or more players. Once all players have
+    registered acceptance, the matchmaking tickets advance to status PLACING, where a new game session is created for
+    the match.
+
+    If any player rejects the match, or if acceptances are not received before a specified timeout, the proposed
+    match is dropped. The matchmaking tickets are then handled in one of two ways: For tickets where one or more
+    players rejected the match, the ticket status is returned to SEARCHING to find a new match. For tickets where one
+    or more players failed to respond, the ticket status is set to CANCELLED, and processing is terminated. A new
+    matchmaking request for these players can be submitted as needed.
+  **/
+  @:overload(function():Request {})
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function acceptMatch(params:{ AcceptanceType:String, PlayerIds:Array<String>, TicketId:String }, callback:GameLiftError->Dynamic->Void):Request;
+
+  /**
+    Cancels a matchmaking ticket or match backfill ticket that is currently being processed. To stop the matchmaking
+    operation, specify the ticket ID. If successful, work on the ticket is stopped, and the ticket status is changed
+    to CANCELLED.
+
+    This call is also used to turn off automatic backfill for an individual game session. This is for game sessions
+    that are created with a matchmaking configuration that has automatic backfill enabled. The ticket ID is included
+    in the MatchmakerData of an updated game session object, which is provided to the game server.
+  **/
+  @:overload(function():Request {})
+  @:overload(function(callback:GameLiftError->Dynamic->Void):Request {})
+  function stopMatchmaking(params:{ TicketId:String }, callback:GameLiftError->Dynamic->Void):Request;
+
+  /**
+    Finds new players to fill open slots in an existing game session. This operation can be used to add players to
+    matched games that start with fewer than the maximum number of players or to replace players when they drop out.
+    By backfilling with the same matchmaker used to create the original match, you ensure that new players meet the
+    match criteria and maintain a consistent experience throughout the game session. You can backfill a match anytime
+    after a game session has been created.
+
+    To request a match backfill, specify a unique ticket ID, the existing game session's ARN, a matchmaking
+    configuration, and a set of data that describes all current players in the game session. If successful, a match
+    backfill ticket is created and returned with status set to QUEUED. The ticket is placed in the matchmaker's
+    ticket pool and processed. Track the status of the ticket to respond as needed.
+
+    The process of finding backfill matches is essentially identical to the initial matchmaking process. The
+    matchmaker searches the pool and groups tickets together to form potential matches, allowing only one backfill
+    ticket per potential match. Once the a match is formed, the matchmaker creates player sessions for the new
+    players. All tickets in the match are updated with the game session's connection information, and the GameSession
+    object is updated to include matchmaker data on the new players. For more detail on how match backfill requests
+    are processed, see How Amazon GameLift FlexMatch Works.
+  **/
+  @:overload(function():Request {})
+  @:overload(function(callback:GameLiftError->{ MatchmakingTicket:MatchmakingTicket }->Void):Request {})
+  function startMatchBackfill(params:StartMatchBackfillRequest, callback:GameLiftError->{ MatchmakingTicket:MatchmakingTicket }->Void):Request;
+}
+
+typedef StartMatchBackfillRequest = {
+   ConfigurationName: String,
+   ?GameSessionArn: String,
+   Players: Array<
+      {
+         LatencyInMs: DynamicAccess<Float>,
+         PlayerAttributes: DynamicAccess<PlayerAttribute>,
+         PlayerId: String,
+         Team: String
+      }
+   >,
+   TicketId: String
+}
+
+typedef StartMatchmakingRequest = {
+   ConfigurationName: String,
+   Players: Array<
+      {
+         LatencyInMs: DynamicAccess<Float>,
+         PlayerAttributes: DynamicAccess<PlayerAttribute>,
+         PlayerId: String,
+         Team: String
+      }
+   >,
+   TicketId: String
+}
+
+typedef PlayerAttribute = {
+  ?N:Float,
+  ?S:String,
+  ?SDM:Dynamic<Float>,
+  ?SL:Array<String>
+}
+
+typedef MatchmakingTicket = {
+  /**
+    The Amazon Resource Name (ARN) associated with the GameLift matchmaking configuration resource that is used with
+    this ticket.
+  **/
+  ?ConfigurationArn: String,
+
+  /**
+    Name of the MatchmakingConfiguration that is used with this ticket. Matchmaking configurations determine how
+    players are grouped into a match and how a new game session is created for the match.
+  **/
+  ?ConfigurationName: String,
+
+  /**
+    Time stamp indicating when this matchmaking request stopped being processed due to success, failure, or
+    cancellation. Format is a number expressed in Unix time as milliseconds (for example "1469498468.057").
+  **/
+  ?EndTime: Float,
+
+  /**
+    Average amount of time (in seconds) that players are currently waiting for a match. If there is not enough recent
+    data, this property may be empty.
+  **/
+  ?EstimatedWaitTime: Int,
+
+  /**
+    Identifier and connection information of the game session created for the match. This information is added to the
+    ticket only after the matchmaking request has been successfully completed.
+  **/
+  ?GameSessionConnectionInfo: {
+    ?DnsName: String,
+    ?GameSessionArn: String,
+    ?IpAddress: String,
+    ?MatchedPlayerSessions: Array<
+      {
+        PlayerId: String,
+        PlayerSessionId: String
+      }
+    >,
+    ?Port: Int
+  },
+
+  /**
+    A set of Player objects, each representing a player to find matches for. Players are identified by a unique
+    player ID and may include latency data for use during matchmaking. If the ticket is in status COMPLETED, the
+    Player objects include the team the players were assigned to in the resulting match.
+  **/
+  ?Players: Array<
+    {
+      LatencyInMs: DynamicAccess<Float>,
+      PlayerAttributes: DyanmicAccess>PlayerAttribute>,
+      PlayerId: String,
+      Team: String
+    }
+  >,
+
+  /**
+    Time stamp indicating when this matchmaking request was received. Format is a number expressed in Unix time as
+    milliseconds (for example "1469498468.057")
+  **/
+  ?StartTime: Float,
+  ?Status: MatchmakingStatus,
+  ?StatusMessage: String,
+  ?StatusReason: String,
+  ?TicketId: String
+}
+
+@:enum abstract MatchmakingStatus(String)
+{
+  /**
+    The matchmaking request has been received and is currently waiting to be processed.
+  **/
+  var QUEUED = "QUEUED";
+
+  /**
+    The matchmaking request is currently being processed.
+  **/
+  var SEARCHING = "SEARCHING";
+
+  /**
+    A match has been proposed and the players must accept the match (see AcceptMatch). This status is used only
+    with requests that use a matchmaking configuration with a player acceptance requirement.
+  **/
+  var REQUIRES_ACCEPTANCE = "REQUIRES_ACCEPTANCE";
+
+  /**
+    The FlexMatch engine has matched players and is in the process of placing a new game session for the match.
+  **/
+  var PLACING = "PLACING";
+
+  /**
+    Players have been matched and a game session is ready to host the players. A ticket in this state contains the
+    necessary connection information for players.
+  **/
+  var COMPLETED = "COMPLETED";
+
+  /**
+    The matchmaking request was not completed.
+  **/
+  var FAILED = "FAILED";
+
+  /**
+    The matchmaking request was canceled. This may be the result of a call to StopMatchmaking or a proposed match
+    that one or more players failed to accept.
+  **/
+  var CANCELLED = "CANCELLED";
+
+  /**
+    The matchmaking request was not successful within the duration specified in the matchmaking configuration
+  **/
+  var TIMED_OUT = "TIMED_OUT";
+}
+
+typedef StartMatchmakingResponse ={
+   MatchmakingTicket:MatchmakingTicket
 }
 
 typedef GameSessionResponse = {
@@ -773,6 +1067,13 @@ typedef GameLiftError = Error<GameLiftErrorCode>;
     should only be retried once the fleet capacity has been increased.
    **/
   var FleetCapacityExceededException = "FleetCapacityExceededException";
+
+  /**
+    The requested operation is not supported in the Region specified.
+
+    HTTP Status Code: 400
+  **/
+  var UnsupportedRegionException = "UnsupportedRegionException";
 }
 
 @:enum abstract RoutingStrategyType(String) from String {
