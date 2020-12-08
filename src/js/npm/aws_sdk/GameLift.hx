@@ -787,7 +787,7 @@ typedef MatchmakingTicket = {
   ?Players: Array<
     {
       LatencyInMs: DynamicAccess<Float>,
-      PlayerAttributes: DyanmicAccess>PlayerAttribute>,
+      PlayerAttributes: DynamicAccess<PlayerAttribute>,
       PlayerId: String,
       Team: String
     }
