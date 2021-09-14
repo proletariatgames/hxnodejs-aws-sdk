@@ -701,6 +701,200 @@ extern class GameLift extends Service {
   @:overload(function():Request {})
   @:overload(function(callback:GameLiftError->{ MatchmakingTicket:MatchmakingTicket }->Void):Request {})
   function startMatchBackfill(params:StartMatchBackfillRequest, callback:GameLiftError->{ MatchmakingTicket:MatchmakingTicket }->Void):Request;
+
+  /**
+    Locates an available game server and temporarily reserves it to host gameplay
+    and players. This operation is called from a game client or client service (such
+    as a matchmaker) to request hosting resources for a new game session. In
+    response, GameLift FleetIQ locates an available game server, places it in
+    CLAIMED status for 60 seconds, and returns connection information that players
+    can use to connect to the game server.
+
+    To claim a game server, identify a game server group. You can also specify a
+    game server ID, although this approach bypasses GameLift FleetIQ placement
+    optimization. Optionally, include game data to pass to the game server at the
+    start of a game session, such as a game map or player information.
+
+    When a game server is successfully claimed, connection information is returned.
+    A claimed game server's utilization status remains AVAILABLE while the claim
+    status is set to CLAIMED for up to 60 seconds. This time period gives the game
+    server time to update its status to UTILIZED (using UpdateGameServer) once
+    players join. If the game server's status is not updated within 60 seconds, the
+    game server reverts to unclaimed status and is available to be claimed by
+    another request. The claim time period is a fixed value and is not
+    configurable.
+
+    If you try to claim a specific game server, this request will fail in the
+    following cases:
+
+    If the game server utilization status is UTILIZED.
+
+    If the game server claim status is CLAIMED.
+  **/
+  function claimGameServer(params:{
+    /**
+      A unique identifier for the game server group where the game server is running. Use either the GameServerGroup name or ARN value.
+      If you are not specifying a game server to claim, this value identifies where you want GameLift FleetIQ to look for an available game server to claim.
+    **/
+    GameServerGroupName:String,
+    /**
+      A set of custom game server properties, formatted as a single string value. This data is passed to a game client or service when it requests information
+      on game servers using ListGameServers or ClaimGameServer.
+    **/
+    ?GameServerData:String,
+    ?GameServerId:String,
+  }, callback:GameLiftError->{ GameServer:FleetIqGameServer }->Void):Request;
+
+  /**
+    Removes the game server from a game server group. As a result of this
+    operation, the deregistered game server can no longer be claimed and will
+    not be returned in a list of active game servers.
+
+    To deregister a game server, specify the game server group and game server
+    ID. If successful, this operation emits a CloudWatch event with termination
+    timestamp and reason.
+  **/
+  function deregisterGameServer(params:{
+    /**
+      A unique identifier for the game server group where the game server is running. Use either the GameServerGroup name or ARN value.
+      If you are not specifying a game server to claim, this value identifies where you want GameLift FleetIQ to look for an available game server to claim.
+    **/
+    GameServerGroupName:String,
+    GameServerId:String,
+  }, callback:GameLiftError->{ GameServer:FleetIqGameServer }->Void):Request;
+
+  /**
+    Updates information about a registered game server to help GameLift FleetIQ
+    to track game server availability. This operation is called by a game server
+    process that is running on an instance in a game server group.
+
+    Use this operation to update the following types of game server information.
+    You can make all three types of updates in the same request:
+
+    To update the game server's utilization status, identify the game server and
+    game server group and specify the current utilization status. Use this
+    status to identify when game servers are currently hosting games and when
+    they are available to be claimed.
+
+    To report health status, identify the game server and game server group and
+    set health check to HEALTHY. If a game server does not report health status
+    for a certain length of time, the game server is no longer considered
+    healthy. As a result, it will be eventually deregistered from the game
+    server group to avoid affecting utilization metrics. The best practice is to
+    report health every 60 seconds.
+
+    To change game server metadata, provide updated game server data.
+
+    Once a game server is successfully updated, the relevant statuses and
+    timestamps are updated.
+  **/
+  function updateGameServer(params:{
+    GameServerGroupName:String,
+    GameServerId:String,
+    ?GameServerData:String,
+    ?HealthCheck:FleetIqHealthStatus,
+    ?UtilizationStatus:FleetIqUtilizationStatus
+  }, callback:GameLiftError->{ GameServer:FleetIqGameServer }->Void):Request;
+}
+
+@:enum abstract FleetIqHealthStatus(String)
+{
+  var Healthy = "HEALTHY";
+}
+
+@:enum abstract FleetIqClaimStatus(String)
+{
+  var Claimed = "CLAIMED";
+}
+
+typedef FleetIqGameServer = {
+  /**
+    Indicates when an available game server has been reserved for gameplay but
+    has not yet started hosting a game. Once it is claimed, the game server
+    remains in CLAIMED status for a maximum of one minute. During this time,
+    game clients connect to the game server to start the game and trigger the
+    game server to update its utilization status. After one minute, the game
+    server claim status reverts to null.
+  **/
+  var ?ClaimStatus:FleetIqClaimStatus;
+
+  /**
+    The port and IP address that must be used to establish a client connection to the game server.
+  **/
+  var ?ConnectionInfo:String;
+
+  /**
+    A set of custom game server properties, formatted as a single string value.
+    This data is passed to a game client or service when it requests information
+    on game servers using ListGameServers or ClaimGameServer
+  **/
+  var ?GameServerData:String;
+
+  /**
+    The ARN identifier for the game server group where the game server is located.
+  **/
+  var ?GameServerGroupArn:String;
+
+  /**
+    A unique identifier for the game server group where the game server is
+    running. Use either the GameServerGroup name or ARN value.
+  **/
+  var ?GameServerGroupName:String;
+
+  /**
+    A custom string that uniquely identifies the game server. Game server IDs
+    are developer-defined and are unique across all game server groups in an AWS
+    account
+  **/
+  var ?GameServerId:String;
+
+  /**
+    The unique identifier for the instance where the game server is running.
+    This ID is available in the instance metadata. EC2 instance IDs use a
+    17-character format, for example: i-1234567890abcdef0.
+  **/
+  var ?InstanceId:String;
+
+  /**
+    Timestamp that indicates the last time the game server was claimed with a
+    ClaimGameServer request. The format is a number expressed in Unix time as
+    milliseconds (for example "1469498468.057"). This value is used to calculate
+    when a claimed game server's status should revert to null.
+  **/
+  var ?LastClaimTime:Float;
+
+  /**
+    Timestamp that indicates the last time the game server was updated with
+    health status using an UpdateGameServer request. The format is a number
+    expressed in Unix time as milliseconds (for example "1469498468.057"). After
+    game server registration, this property is only changed when a game server
+    update specifies a health check value.
+  **/
+  var ?LastHealthCheckTime:Float;
+
+  /**
+    Timestamp that indicates when the game server was created with a
+    RegisterGameServer request. The format is a number expressed in Unix time as
+   */
+  var ?RegistrationTime:Float;
+
+  /**
+    Indicates whether the game server is currently available for new games or is
+    busy. Possible statuses include:
+
+    AVAILABLE - The game server is available to be claimed. A game server that
+    has been claimed remains in this status until it reports game hosting
+    activity.
+
+    UTILIZED - The game server is currently hosting a game session with players.
+  **/
+  var ?UtilizationStatus:FleetIqUtilizationStatus;
+}
+
+@:enum abstract FleetIqUtilizationStatus(String)
+{
+  var Available = "AVAILABLE";
+  var Utilized = "UTILIZED";
 }
 
 typedef StartMatchBackfillRequest = {
@@ -1074,6 +1268,22 @@ typedef GameLiftError = Error<GameLiftErrorCode>;
     HTTP Status Code: 400
   **/
   var UnsupportedRegionException = "UnsupportedRegionException";
+
+  /**
+    The specified game server group has no available game servers to fulfill a
+    ClaimGameServer request. Clients can retry such requests immediately or
+    after a waiting period.
+
+    HTTP Status Code: 400
+  **/
+  var OutOfCapacityException = "OutOfCapacityException";
+
+  var ConflictException = "ConflictException";
+
+  inline public function toString()
+  {
+    return this;
+  }
 }
 
 @:enum abstract RoutingStrategyType(String) from String {
