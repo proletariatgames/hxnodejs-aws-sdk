@@ -5,8 +5,8 @@
   "classPath": "src",
   "tags": ["nodejs", "hxnodejs", "aws-sdk", "aws"],
   "description": "Externs for the aws-sdk NPM module",
-  "releasenote": "Update to Haxe 4",
-  "version": "2.493.2",
+  "releasenote": "Added some FleetIQ-related externs",
+  "version": "2.989.0",
   "contributors": ["Proletariat", "ProletariatDev1"],
   "dependencies": {
     "hxnodejs": ""
